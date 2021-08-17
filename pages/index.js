@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ThumbUpIcon, ChatAlt2Icon } from "@heroicons/react/outline"
 
-import { getArticles } from "lib/helpers";
+import { getArticles, getInitialData } from "lib/helpers";
 
 export default function Home(props) {
   const [pagesLoaded, setPagesLoaded] = useState(2);
@@ -109,17 +109,12 @@ export default function Home(props) {
 }
 
 export async function getStaticProps() {
-  const firstPage = await getArticles(0);
-  const secondPage = await getArticles(1);
-  const thirdPage = await getArticles(2);
+  const articles = await getInitialData();
 
   return {
     props: {
-      articles: [
-        firstPage,
-        secondPage,
-        thirdPage,
-      ]
-    }
+      articles,
+    },
+    revalidate: 60,
   }
 }
