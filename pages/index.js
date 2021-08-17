@@ -6,6 +6,8 @@ import { ThumbUpIcon, ChatAlt2Icon } from "@heroicons/react/outline"
 import { getArticles, getInitialData } from "lib/helpers";
 
 export default function Home(props) {
+  const [loading, setLoading] = useState(false);
+
   const [pagesLoaded, setPagesLoaded] = useState(2);
   const [currPage, setCurrPage] = useState(0);
   const [paginationRange, setPaginationRange] = useState([currPage, currPage + 1, currPage + 2]);
@@ -18,6 +20,8 @@ export default function Home(props) {
   }
 
   const handleNext = async () => {
+    setLoading(true);
+
     const nextPage = currPage + 1;
     if (nextPage > pagesLoaded) {
       const nthPage = await getArticles(nextPage)
@@ -29,6 +33,7 @@ export default function Home(props) {
       setPagesLoaded(prev => prev + 1);
     }
     setCurrPage(prev => prev + 1);
+    setLoading(false);
   }
 
   const getPaginationRange = () => {
@@ -42,6 +47,8 @@ export default function Home(props) {
       setPaginationRange(getPaginationRange());
     }
   }, [currPage, allArticles])
+
+  if (loading) return <p>Loading...</p>
 
   return (
     <>
@@ -58,8 +65,9 @@ export default function Home(props) {
           Prev
         </button>
         <div className="flex space-x-4">
-          {paginationRange?.map(pageNo => (
+          {paginationRange?.map((pageNo, index) => (
             <button
+              key={index}
               onClick={() => {
                 if (pageNo > pagesLoaded) handleNext()
                 else setCurrPage(pageNo)

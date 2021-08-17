@@ -21,10 +21,10 @@ export default function Article({ article, comments }) {
       <h1>
         {article?.title}
       </h1>
-      {article?.content?.map(block => {
+      {article?.content?.map((block, index) => {
         if (block.type === "paragraph") {
           return (
-            <p className="break-words">{block.data.text}</p>
+            <p key={index} className="break-words">{block.data.text}</p>
           )
         }
       })}
@@ -32,8 +32,8 @@ export default function Article({ article, comments }) {
         Comments
       </p>
       {comments?.length > 0 ?
-        comments?.map(comment => (
-          <>
+        comments?.map((comment, index) => (
+          <div key={index}>
             <div className="w-full flex justify-between">
               <div className="flex space-x-4 items-center">
                 {!comment.user_avatar.includes('svg') ?
@@ -57,7 +57,7 @@ export default function Article({ article, comments }) {
                 <span className="text-sm">{comment.user_likes}</span>
               </div>
             </div>
-          </>
+          </div>
         ))
         :
         <p>No comments</p>
