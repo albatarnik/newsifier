@@ -44,7 +44,7 @@ export default function Home(props) {
   }, [currPage, allArticles])
 
   return (
-    <div className="w-full m-auto py-10 prose lg:prose-lg">
+    <>
       <h1>
         Latest News
       </h1>
@@ -73,26 +73,31 @@ export default function Home(props) {
 
       {currArticles?.map(article => (
         <Link key={article.id} href={article.id.toString()}>
-          <div className="mb-8 flex space-x-10 cursor-pointer">
+          <div className={`
+            mb-8 flex flex-wrap sm:flex-nowrap
+            space-x-0 sm:space-x-10 
+            cursor-pointer
+          `}>
             <Image
               src={article.image}
               width={300}
               height={200}
-              className="w-1/3 object-cover object-center rounded-lg"
+              layout="intrinsic"
+              className="w-full sm:w-1/3 object-cover object-center rounded-lg"
             />
-            <div className="w-2/3">
+            <div className="w-full sm:w-2/3">
               <h4>{article.title}</h4>
               <p>
                 door{" "}
-                <span className="underline">
+                <span>
                   {article.author?.name}
                 </span>
               </p>
-              <div className="flex space-x-6 items-center">
+              <div className="-mt-5 sm:mt-0 flex space-x-6 items-center">
                 {/* COMMENTS */}
                 <div className="flex space-x-1 items-center">
                   <ChatAlt2Icon className="h-6 w-6" />
-                  <p>{article.comments_count}</p>
+                  <p>{article.comments_count < 0 ? -1 * article.comments_count : article.comments_count}</p>
                 </div>
                 {/* CLAPS */}
                 <div className="flex space-x-1 items-center">
@@ -104,7 +109,7 @@ export default function Home(props) {
           </div>
         </Link>
       ))}
-    </div>
+    </>
   )
 }
 
