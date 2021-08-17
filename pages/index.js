@@ -60,6 +60,10 @@ export default function Home(props) {
         <div className="flex space-x-4">
           {paginationRange?.map(pageNo => (
             <button
+              onClick={() => {
+                if (pageNo > pagesLoaded) handleNext()
+                else setCurrPage(pageNo)
+              }}
               className={pageNo === currPage ? 'underline' : ''}
             >
               {pageNo + 1}
